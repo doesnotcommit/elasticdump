@@ -95,10 +95,10 @@ func LoadData(client *elasticsearch.Client, queue *DataQueue[*Hit], batch int, i
 		startTime2 := time.Now()
 		var buf bytes.Buffer
 		for _, r := range hits {
-			meta := []byte(fmt.Sprintf(`{"create": {"_index": "%s", "_type": "_doc", "_id": "%s"}}%s`, index, r.ID, "\n"))
+			meta := []byte(fmt.Sprintf(`{"create": {"_index": "%s", "_id": "%s"}}%s`, index, r.ID, "\n"))
 			// have routing field
 			if len(r.Routing) > 0 {
-				meta = []byte(fmt.Sprintf(`{"create": {"_index": "%s", "_type": "_doc", "_id": "%s", "routing": "%s"}}%s`, index, r.ID, r.Routing, "\n"))
+				meta = []byte(fmt.Sprintf(`{"create": {"_index": "%s", "_id": "%s", "routing": "%s"}}%s`, index, r.ID, r.Routing, "\n"))
 			}
 			buf.Write(meta)
 			buf.Write(r.Source)
@@ -112,7 +112,7 @@ func LoadData(client *elasticsearch.Client, queue *DataQueue[*Hit], batch int, i
 		if res.IsError() || err != nil {
 			return errors.Errorf("status: %d, body: %s", res.StatusCode, string(body))
 		}
-		var result = &BulkResponse{}
+		result := &BulkResponse{}
 		err = json.Unmarshal(body, result)
 		if err != nil {
 			return errors.WithMessagef(err, "status: %d, body: %s", res.StatusCode, string(body))
