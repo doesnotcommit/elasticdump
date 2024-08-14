@@ -12,3 +12,5 @@ require (
 )
 
 require github.com/inconshreveable/mousetrap v1.1.0 // indirect
+
+replace github.com/shinexia/elasticdump => github.com/doesnotcommit/elasticdump v0.0.2
